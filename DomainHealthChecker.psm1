@@ -1,14 +1,17 @@
-<#>
-HelpInfoURI 'https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Invoke-SpfDkimDmarc.md'
+<#
+HelpInfoURI 'Https://github.com/bakicubuk/Domain_SpfDkimDmarc_Checker'
 #>
 
-# Load public functions
+# Public (disa acik) fonksiyonlari yukle
+# DIKKAT: Test-Path kontrolu nedeniyle 'public' klasoru yoksa hicbir hata
+# uretilmez, fonksiyonlar sessizce yuklenmez. Import sonrasi Get-Command ile
+# 10 fonksiyonun geldigini mutlaka dogrulayin.
 $PublicFolder = Join-Path -Path $PSScriptRoot -ChildPath 'public'
 if (Test-Path -Path $PublicFolder) {
     Get-ChildItem -Path $PublicFolder -Filter "*.ps1" -File | ForEach-Object { . $_.FullName }
 }
 
-# Load private functions
+# Private (ic kullanim) fonksiyonlari yukle
 $PrivateFolder = Join-Path -Path $PSScriptRoot -ChildPath 'private'
 if (Test-Path -Path $PrivateFolder) {
     Get-ChildItem -Path $PrivateFolder -Filter "*.ps1" -File | ForEach-Object { . $_.FullName }
@@ -21,7 +24,7 @@ function Invoke-SpfDkimDmarc {
             Mandatory, ParameterSetName = 'domain',
             ValueFromPipeline = $True,
             ValueFromPipelineByPropertyName = $True,
-            HelpMessage = "Specifies the domain for resolving the SPF, DKIM and DMARC-record.",
+            HelpMessage = "SPF, DKIM ve DMARC kaydinin sorgulanacagi domain adini belirtir.",
             Position = 1)]
         [string[]]$Name,
 
@@ -29,30 +32,32 @@ function Invoke-SpfDkimDmarc {
             Mandatory, ParameterSetName = 'file',
             ValueFromPipeline = $True,
             ValueFromPipelineByPropertyName = $True,
-            HelpMessage = "Show SPF, DKIM and DMARC-records from multiple domains from a file.",
+            HelpMessage = "Bir dosyadaki birden fazla domain icin SPF, DKIM ve DMARC kayitlarini gosterir.",
             Position = 2)]
         [Alias('Path')]
         [System.IO.FileInfo]$File,
 
         [Parameter(Mandatory = $False,
-            HelpMessage = "Specify a custom DKIM selector.",
+            HelpMessage = "Ozel bir DKIM selector adi belirtir.",
             Position = 3)]
         [string]$DkimSelector,
 
         [Parameter(Mandatory = $false,
-            HelpMessage = "DNS Server to use.",
+            HelpMessage = "Sorgularin yonlendirilecegi DNS sunucusu.",
             Position = 4)]
         [string]$Server,
 
         [Parameter(Mandatory = $false,
-            HelpMessage = "Skip the update check on module.",
+            HelpMessage = "Modul guncelleme kontrolunu atlar.",
             Position = 5)]
         [switch]$SkipUpdateCheck
     )
 
     begin {
 
-        # Check if there is an update available
+        # Modul icin guncelleme olup olmadigini kontrol et
+        # NOT: Toplu taramalarda -SkipUpdateCheck ile bu adim atlanmalidir,
+        # aksi halde her domain icin PowerShell Gallery'ye istek gider.
         if (!$SkipUpdateCheck) {
             try {
                 Update-ModuleDomainHealthChecker -Verbose:$False
@@ -92,7 +97,7 @@ function Invoke-SpfDkimDmarc {
             }
         }
 
-        # If 'File' parameter is used
+        # 'File' parametresi kullanildiginda: dosyadaki her satiri domain olarak isle
         if ($PSBoundParameters.ContainsKey('File')) {
             Write-Progress -Activity "Querying SPF, DKIM, DMARC, MTA-STS, BIMI, DNSSEC and TLS-RPT records" -Status "Processing domains..." -PercentComplete 0
             foreach ($Name in (Get-Content -Path $File)) {
@@ -103,6 +108,8 @@ function Invoke-SpfDkimDmarc {
                 $BIMI = Get-BimiRecord -Name $Name @Splat
                 $DNSSEC = Get-DNSSec -Name $Name @Splat
                 $TlsRPT = Get-TlsRpt -Name $Name @Splat
+                # Get-CAARecord, Resolve-DnsName CAA tipini desteklemedigi icin
+                # Cloudflare DNS over HTTPS kullanir; bu nedenle -Server parametresi almaz.
                 $CAA = Get-CAARecord -Name $Name
 
                 $InvokeReturnValues = New-Object psobject
@@ -110,7 +117,7 @@ function Invoke-SpfDkimDmarc {
                 $InvokeReturnValues | Add-Member NoteProperty "SpfRecord" $SPF.SPFRecord
                 $InvokeReturnValues | Add-Member NoteProperty "SpfAdvisory" $SPF.SpfAdvisory
                 $InvokeReturnValues | Add-Member NoteProperty "SPFRecordLength" $SPF.SPFRecordLength
-                $InvokeReturnValues | Add-Member NoteProperty "SPFRecordDnsLookupCount" $SPF.SPFRecordDnsLookupCount
+                $InvokeReturnValues | Add-Member NoteProperty "SPFRecordDnsLookupCount" $SPF.SPFRecordDnsLookupCount  # "7/10 (OK)" gibi METIN doner, sayi degil
                 $InvokeReturnValues | Add-Member NoteProperty "DmarcRecord" $DMARC.DmarcRecord
                 $InvokeReturnValues | Add-Member NoteProperty "DmarcAdvisory" $DMARC.DmarcAdvisory
 
@@ -153,7 +160,7 @@ function Invoke-SpfDkimDmarc {
             }
         }
 
-        # If 'Name' parameter is used
+        # 'Name' parametresi kullanildiginda: parametreyle verilen domainleri isle
         if ($PSBoundParameters.ContainsKey('Name')) {
             Write-Progress -Activity "Querying SPF, DKIM, DMARC, MTA-STS, BIMI, DNSSEC and TLS-RPT records" -Status "Processing domains..." -PercentComplete 0
             foreach ($domain in $Name) {
@@ -171,7 +178,7 @@ function Invoke-SpfDkimDmarc {
                 $InvokeReturnValues | Add-Member NoteProperty "SpfRecord" $SPF.SPFRecord
                 $InvokeReturnValues | Add-Member NoteProperty "SpfAdvisory" $SPF.SpfAdvisory
                 $InvokeReturnValues | Add-Member NoteProperty "SPFRecordLength" $SPF.SPFRecordLength
-                $InvokeReturnValues | Add-Member NoteProperty "SPFRecordDnsLookupCount" $SPF.SPFRecordDnsLookupCount
+                $InvokeReturnValues | Add-Member NoteProperty "SPFRecordDnsLookupCount" $SPF.SPFRecordDnsLookupCount  # "7/10 (OK)" gibi METIN doner, sayi degil
                 $InvokeReturnValues | Add-Member NoteProperty "DmarcRecord" $DMARC.DmarcRecord
                 $InvokeReturnValues | Add-Member NoteProperty "DmarcAdvisory" $DMARC.DmarcAdvisory
 
