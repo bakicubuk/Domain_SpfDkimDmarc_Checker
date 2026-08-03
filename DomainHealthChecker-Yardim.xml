@@ -1,0 +1,1610 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-BimiRecord</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>BimiRecord</command:noun>
+      <maml:description>
+        <maml:para>Bir veya birden fazla domain icin BIMI (Brand Indicators for Message Identification) kaydini cozumler ve dogrular.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get-BimiRecord, domain'in BIMI TXT kaydini sorgular (istege bagli olarak belirtilen selector ile), kayit icerigini degerlendirir, DMARC politikasinin BIMI ile uyumlu olup olmadigini dogrular (p=quarantine veya p=reject ve pct=100 gerekir) ve a= etiketiyle isaret edilen VMC sertifikasini gecerli HTTPS adresi ve son kullanma tarihi acisindan inceler. Donen alanlar: Name, BimiRecord, BimiAdvisory. DIKKAT: Kayit bulunamadiginda BimiRecord alani bos kalmaz, aciklayici bir metin yazilir; ciktiyi programatik olarak isleyecekseniz v=BIMI1 onekini arayin. Windows'ta Resolve-DnsName, Linux/macOS'ta dig kullanir (dnsutils paketi gerekir).</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-BimiRecord</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>BIMI kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Selector</maml:name>
+          <maml:description>
+            <maml:para>Sorgulanacak BIMI selector'unu belirtir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Server</maml:name>
+          <maml:description>
+            <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+          <maml:name>ProgressAction</maml:name>
+          <maml:description>
+            <maml:para></maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+          <dev:type>
+            <maml:name>ActionPreference</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>BIMI kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Selector</maml:name>
+        <maml:description>
+          <maml:para>Sorgulanacak BIMI selector'unu belirtir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>Server</maml:name>
+        <maml:description>
+          <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+        <maml:name>ProgressAction</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+        <dev:type>
+          <maml:name>ActionPreference</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-BIMIrecord binsec.nl | fl *
+
+Name         : binsec.nl
+BimiRecord   : We couldn't find a BIMI record associated with your domain.
+BimiAdvisory : DMARC policy is set to p=reject, which is the best policy for BIMI to function. No 'a=' (VMC) tag found, it's recommended to include a VMC certificate.</dev:code>
+        <dev:remarks>
+          <maml:para>Belirtilen domain icin BIMI kaydini sorgular. Cikti uzun oldugundan Format-List (fl) ile okumak daha rahattir.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-BIMIRecord binsec.nl, dmarcadvisor.com
+
+Name             BimiRecord                                                                                                                                BimiAdvisory
+----             ----------                                                                                                                                ------------
+binsec.nl        We couldn't find a BIMI record associated with your domain.                                                                               DMARC policy is set to p=reject, which is the best policy for BIMI to function. No 'a=' (VMC) tag found, it's recommended to include a VMC certificate.
+dmarcadvisor.com v=BIMI1; l=https://bimi.eu.dmarcmanager.app/eu-2o4fmqie/default/logo.svg; a=https://bimi.eu.dmarcmanager.app/eu-2o4fmqie/default/cert.pem DMARC policy is set to p=reject, which is the best policy for BIMI to function. 'a=' (VMC) tag contains a valid HTTPS URL.</dev:code>
+        <dev:remarks>
+          <maml:para>Iki domain icin BIMI kaydini sorgular.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-BIMIRecord bimigroup.org -server 1.1.1.1
+
+Name          BimiRecord                                       BimiAdvisory
+----          ----------                                       ------------
+bimigroup.org v=BIMI1; l=https://bimigroup.org/bimi-sq.svg; a= DMARC policy is set to p=reject, which is the best policy for BIMI to function. 'a=' (VMC) tag does not contain a valid HTTPS URL, it should start with 'https://'. It's recommended to use a valid HTTPS URL for VMC to prevent that scammers misuse your logo.</dev:code>
+        <dev:remarks>
+          <maml:para>Alternatif bir DNS sunucusu uzerinden BIMI kaydini sorgular.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Cevrimici surum:</maml:linkText>
+        <maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Get-BIMIecord.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-BimiRecord, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+        <maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>GitHub proje sayfasi</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-DKIMRecord</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>DKIMRecord</command:noun>
+      <maml:description>
+        <maml:para>Bir veya birden fazla domain icin DKIM kayitlarini getirir ve dogrular.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get-DKIMRecord, verilen selector'u ya da yaygin selector listesini kullanarak DKIM kayitlarini sorgular, kaydi bulmak icin CNAME zincirlerini takip eder ve her domain icin bulgulari ve onerileri raporlar. Donen alanlar: Name, DkimRecord, DkimSelector, DKIMAdvisory. DIKKAT: Birden fazla selector tespit edilirse cikti yapisi degisir; duz DkimRecord alani yerine DkimSelectorsDetected alani dolar ve her selector icin DkimSelector-1, DkimRecord-1, DkimAdvisory-1 seklinde numarali alanlar uretilir. Windows'ta Resolve-DnsName, Linux/macOS'ta dig kullanir.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-DKIMRecord</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>DKIM kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>DkimSelector</maml:name>
+          <maml:description>
+            <maml:para>Ozel bir DKIM selector adi belirtir. Verilmezse yaygin selector listesi denenir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Server</maml:name>
+          <maml:description>
+            <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+          <maml:name>ProgressAction</maml:name>
+          <maml:description>
+            <maml:para></maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+          <dev:type>
+            <maml:name>ActionPreference</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>DkimSelector</maml:name>
+        <maml:description>
+          <maml:para>Ozel bir DKIM selector adi belirtir. Verilmezse yaygin selector listesi denenir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>DKIM kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>Server</maml:name>
+        <maml:description>
+          <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+        <maml:name>ProgressAction</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+        <dev:type>
+          <maml:name>ActionPreference</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-DKIMRecord -Name binsec.nl | fl *
+
+Name         : binsec.nl
+DkimRecord   : {v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7b7krQw/+b1QOBkbBEW7pMNBLbb7DCEiiLM1YtM0Ekv/VgTLmdZen+m2zzaBrCpm8hnB5WogKeXJ/oE/7qzSvQFNVoOX8o5clWCL+vhnkkr+lAPOJkBJOc/ 
+               asQOPc+xoPd+H86pS50gvqcJy8m0dXAp+aX62Zc2z6DDCsXl4u8QIDAQAB; n=1024,1494259634,1,  510157234}
+DkimSelector : k1
+DKIMAdvisory : DKIM-record found.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, belirtilen domain icin DKIM kaydini cozumler. 'k1' selector'unu otomatik olarak tespit etmistir.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-DKIMRecord -Name binsec.nl -DkimSelector selector1 -Server 10.0.0.1
+
+Name         : binsec.nl
+DkimRecord   : {v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDJZs7jT+kHy/Xt/TIoTPStGbeljEEqER2eRGX+xS4SeyOEchCKreZg+FotPafhNW+HWx4NcglLfaP8l8aGnPSTSHNRfGBhXMAJj2O5kxWiIuF/31HWtzAhU+L 
+               HxCJM8kPz4DIDqkFWQqrL9pTQRZUxs86pPx/GZbpvhL0f9U+11QIDAQAB;}
+DkimSelector : selector1
+DKIMAdvisory : DKIM-record found.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, elle belirtilen bir selector icin DKIM kaydini 10.0.0.1 DNS sunucusu uzerinden cozumler.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Cevrimici surum:</maml:linkText>
+        <maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Get-DKIMRecord.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-DKIMRecord, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+        <maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>GitHub proje sayfasi</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-DMARCRecord</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>DMARCRecord</command:noun>
+      <maml:description>
+        <maml:para>Bir domain'in DMARC kaydini getirir ve degerlendirir.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get-DMARCRecord, bir veya birden fazla domain icin _dmarc TXT kaydini sorgular, DMARC politikasini ve alt alan adi politikasini (p= ve sp=) degerlendirir ve her domain icin Name, DmarcRecord, DmarcAdvisory alanlarini iceren bir nesne dondurur. Politika seviyeleri: p=reject en guclu seviyedir, p=quarantine ara seviyedir, p=none yalnizca raporlama yapar ve hicbir mesaji engellemez. Onerilen yaklasim kademeli gecistir. Windows'ta Resolve-DnsName, Linux/macOS'ta dig kullanir.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-DMARCRecord</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>DMARC kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Server</maml:name>
+          <maml:description>
+            <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>DMARC kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Server</maml:name>
+        <maml:description>
+          <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-DMARCRecord -Name binsec.nl
+
+Name      DmarcRecord                 DmarcAdvisory
+----      -----------                 -------------
+binsec.nl v=DMARC1; p=reject; pct=100 Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, belirtilen domain'in DMARC kaydini cozumler.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-DMARCRecord -Name binsec.nl -Server 10.0.0.1
+
+Name      DmarcRecord                 DmarcAdvisory
+----      -----------                 -------------
+binsec.nl v=DMARC1; p=none; pct=100   Domain has a valid DMARC record but the DMARC (subdomain) policy does not prevent abuse of your domain by phishers and spammers.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, DMARC kaydini 10.0.0.1 DNS sunucusu uzerinden cozumler.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Cevrimici surum:</maml:linkText>
+        <maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Get-DMARCRecord.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-DMARCRecord, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+        <maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>GitHub proje sayfasi</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-DNSSec</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>DNSSec</command:noun>
+      <maml:description>
+        <maml:para>Bir veya birden fazla domain'in DNSSEC ile imzalanip imzalanmadigini belirler.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get-DNSSec, belirtilen domain'ler icin DNSKEY kayitlarini sorgular ve RFC 4034'e gore DNSSEC yapilandirmasini (flags ve protokol alanlarini) degerlendirir. Donen alanlar: Name, DNSSEC, DnsSecAdvisory. Neden onemli: SPF, DKIM ve DMARC kayitlarinin hepsi DNS uzerinden okunur; DNS cevabi manipule edilebiliyorsa bu kayitlarin hicbirinin guvencesi kalmaz. Windows'ta Resolve-DnsName, Linux/macOS'ta dig kullanir (dnsutils paketi gerekir).</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-DNSSec</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>DNSSEC varliginin test edilecegi domain adini belirtir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Server</maml:name>
+          <maml:description>
+            <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+          <maml:name>ProgressAction</maml:name>
+          <maml:description>
+            <maml:para></maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+          <dev:type>
+            <maml:name>ActionPreference</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>DNSSEC varliginin test edilecegi domain adini belirtir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Server</maml:name>
+        <maml:description>
+          <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+        <maml:name>ProgressAction</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+        <dev:type>
+          <maml:name>ActionPreference</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-DNSSec -Name binsec.nl</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, belirtilen domain icin DNSSEC kayitlarini cozumler.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Cevrimici surum:</maml:linkText>
+        <maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Get-DNSSec.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>DNSSEC nasil calisir (Cloudflare)</maml:linkText>
+        <maml:uri>https://www.cloudflare.com/dns/dnssec/how-dnssec-works/</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-DNSSec, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+        <maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>GitHub proje sayfasi</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-SPFRecord</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>SPFRecord</command:noun>
+      <maml:description>
+        <maml:para>Bir veya birden fazla domain icin SPF (Sender Policy Framework) kaydini getirir ve degerlendirir.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get-SPFRecord, domain'in v=spf1 ile baslayan SPF TXT kaydini bulur, redirect yonlendirmelerini takip eder, ic ice gecmis DNS lookup'larini sayar (RFC 7208'in 10 lookup sinirini denetler), kayit ve token uzunluklarini kontrol eder ve SPF qualifier'ini degerlendirerek uygulanabilir oneriler uretir. Donen alanlar: Name, SPFRecord, SPFRecordLength, SPFRecordDnsLookupCount, SPFAdvisory. DIKKAT: SPFRecordDnsLookupCount sayisal degil, 7/10 (OK) biciminde METIN doner. Uc varyanti vardir: 8 ve alti icin (OK), 9 ve uzeri icin (Ok, but watch your DNS Lookups!), tam 10 icin (Ok, but maximum DNS Lookups reached!). Sayi 10'u astiginda da watch mesaji geldigi icin metindeki Ok ifadesine guvenmeyin; soldaki sayiyi ayristirin. Windows'ta Resolve-DnsName, Linux/macOS'ta dig kullanir.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-SPFRecord</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>SPF kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Server</maml:name>
+          <maml:description>
+            <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+          <maml:name>ProgressAction</maml:name>
+          <maml:description>
+            <maml:para></maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+          <dev:type>
+            <maml:name>ActionPreference</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>SPF kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Server</maml:name>
+        <maml:description>
+          <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+        <maml:name>ProgressAction</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+        <dev:type>
+          <maml:name>ActionPreference</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; get-spfrecord binsec.nl
+
+Name                    : binsec.nl
+SPFRecord               : v=spf1 -all
+SPFRecordLength         : 11
+SPFRecordDnsLookupCount : 0/10 (OK)
+SPFAdvisory             : An SPF-record is configured and the policy is sufficiently strict.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, belirtilen domain'in SPF kaydini cozumler.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-SPFRecord -Name binsec.nl -Server 10.0.0.1
+
+Name                    : binsec.nl
+SPFRecord               : v=spf1 -all
+SPFRecordLength         : 11
+SPFRecordDnsLookupCount : 0/10 (OK)
+SPFAdvisory             : An SPF-record is configured and the policy is sufficiently strict.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, SPF kaydini 10.0.0.1 DNS sunucusu uzerinden cozumler.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Cevrimici surum:</maml:linkText>
+        <maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Get-SPFRecord.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-SPFRecord, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+        <maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>GitHub proje sayfasi</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-MtaSts</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>MtaSts</command:noun>
+      <maml:description>
+        <maml:para>Bir domain'in MTA-STS DNS kaydini ve politika dosyasini dogrular, MX sunucularinin TLS destegini raporlar.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Invoke-MtaSts iki parcayi birlikte kontrol eder: _mta-sts TXT DNS kaydini (v=STSv1 surumunu ve id alanini dogrular) ve https://mta-sts.&lt;domain&gt;/.well-known/mta-sts.txt adresindeki politika dosyasini (surum, mod, max_age ve listelenen mx girdilerini degerlendirir). Ardindan politika dosyasindaki MX girdilerini gercek MX DNS kayitlariyla karsilastirir ve MX sunucularinin STARTTLS destekleyip desteklemedigini test eder. Donen alanlar: Name, mtaRecord, mtaAdvisory. Windows'ta Resolve-DnsName, Linux/macOS'ta dig kullanir.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-MtaSts</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>MTA-STS kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Server</maml:name>
+          <maml:description>
+            <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+          <maml:name>ProgressAction</maml:name>
+          <maml:description>
+            <maml:para></maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+          <dev:type>
+            <maml:name>ActionPreference</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>MTA-STS kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Server</maml:name>
+        <maml:description>
+          <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+        <maml:name>ProgressAction</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+        <dev:type>
+          <maml:name>ActionPreference</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-MtaSts microsoft.com
+
+Name          mtaRecord                    mtaAdvisory
+----          ---------                    -----------
+microsoft.com v=STSv1; id=20190225000000Z; The domain has the MTA-STS DNS record and file configured and protected against interception or tampering.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, belirtilen domain icin MTA-STS TXT kaydini ve gecerli MTA-STS politikasini kontrol eder.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt;  Invoke-MtaSts binsec.nl, microsoft.com
+
+Name          mtaRecord                    mtaAdvisory
+----          ---------                    -----------
+binsec.nl                                  The MTA-STS DNS record doesn't exist.
+microsoft.com v=STSv1; id=20190225000000Z; The domain has the MTA-STS DNS record and file configured and protected against interception or tampering.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, iki domain icin MTA-STS TXT kaydini ve politikasini kontrol eder.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-MtaSts microsoft.com -Server 1.1.1.1
+
+Name          mtaRecord                    mtaAdvisory
+----          ---------                    -----------
+microsoft.com v=STSv1; id=20190225000000Z; The domain has the MTA-STS DNS record and file configured and protected against interception or tampering.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, kontrolu farkli bir DNS sunucusu uzerinden yapar. Split DNS ortamlarinda kullanilir.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Cevrimici surum:</maml:linkText>
+        <maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Invoke-MtaSts.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Invoke-MtaSts, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+        <maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>GitHub proje sayfasi</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Invoke-SpfDkimDmarc</command:name>
+      <command:verb>Invoke</command:verb>
+      <command:noun>SpfDkimDmarc</command:noun>
+      <maml:description>
+        <maml:para>SPF, DKIM, DMARC, MTA-STS, BIMI, DNSSEC, TLS-RPT ve CAA kayitlarini tek komutta kontrol eder.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Invoke-SpfDkimDmarc, DomainHealthChecker modulunun ana fonksiyonudur. Bir veya birden fazla domain icin tum kayit kontrollerini tek cagrida calistirir ve birlesik bir nesne dondurur. Kayitlari tek tek kontrol etmek isterseniz Get-SPFRecord, Get-DKIMRecord, Get-DMARCRecord cmdlet'lerini ayri ayri kullanabilirsiniz. TOPLU TARAMADA DIKKAT: Cmdlet her calistirildiginda PowerShell Gallery'ye karsi otomatik guncelleme kontrolu yapar; 50 domainlik bir listede bu gereksiz gecikme demektir. Toplu taramalarda -SkipUpdateCheck kullanin. Alias: isdd.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Invoke-SpfDkimDmarc</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="2" aliases="Path">
+          <maml:name>File</maml:name>
+          <maml:description>
+            <maml:para>Birden fazla domain'i bir dosyadan okur. Dosyada her satirda bir domain bulunmalidir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <dev:type>
+            <maml:name>FileInfo</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>DkimSelector</maml:name>
+          <maml:description>
+            <maml:para>Ozel bir DKIM selector adi belirtir. Verilmezse yaygin selector listesi denenir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+          <maml:name>Server</maml:name>
+          <maml:description>
+            <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+          <maml:name>ProgressAction</maml:name>
+          <maml:description>
+            <maml:para></maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+          <dev:type>
+            <maml:name>ActionPreference</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Invoke-SpfDkimDmarc</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>Kayitlarin cozumlenecegi domain adlarini belirtir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>DkimSelector</maml:name>
+          <maml:description>
+            <maml:para>Ozel bir DKIM selector adi belirtir. Verilmezse yaygin selector listesi denenir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+          <maml:name>Server</maml:name>
+          <maml:description>
+            <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+          <maml:name>ProgressAction</maml:name>
+          <maml:description>
+            <maml:para></maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+          <dev:type>
+            <maml:name>ActionPreference</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>DkimSelector</maml:name>
+        <maml:description>
+          <maml:para>Ozel bir DKIM selector adi belirtir. Verilmezse yaygin selector listesi denenir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="2" aliases="Path">
+        <maml:name>File</maml:name>
+        <maml:description>
+          <maml:para>Birden fazla domain'i bir dosyadan okur. Dosyada her satirda bir domain bulunmalidir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+        <dev:type>
+          <maml:name>FileInfo</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>Kayitlarin cozumlenecegi domain adlarini belirtir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <maml:name>Server</maml:name>
+        <maml:description>
+          <maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+        <maml:name>ProgressAction</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+        <dev:type>
+          <maml:name>ActionPreference</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.IO.FileInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-spfDkimDmarc binsec.nl
+
+Name            : binsec.nl
+SpfRecord       : v=spf1 -all
+SpfAdvisory     : An SPF-record is configured and the policy is sufficiently strict.
+SPFRecordLength : 11
+DmarcRecord     : v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:rac3n92qqi@rua.powerdmarc.com; ruf=mailto:rac3n92qqi@ruf.powerdmarc.com; pct=100;
+DmarcAdvisory   : Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.
+DkimRecord      :
+DkimSelector    : dkim
+DkimAdvisory    : We couldn't find a DKIM record associated with your domain.
+MtaRecord       :
+MtaAdvisory     : The MTA-STS DNS record doesn't exist.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, tek bir domain icin tum kayit kontrollerini calistirir.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-spfDkimDmarc binsec.nl, microsoft.com -IncludeDNSSEC
+
+Name            : binsec.nl
+SpfRecord       : v=spf1 -all
+SpfAdvisory     : An SPF-record is configured and the policy is sufficiently strict.
+SPFRecordLength : 11
+DmarcRecord     : v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:rac3n92qqi@rua.powerdmarc.com; ruf=mailto:rac3n92qqi@ruf.powerdmarc.com; pct=100;
+DmarcAdvisory   : Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.
+DkimRecord      :
+DkimSelector    : dkim
+DkimAdvisory    : We couldn't find a DKIM record associated with your domain.
+MtaRecord       :
+MtaAdvisory     : The MTA-STS DNS record doesn't exist.
+DnsSec          : Domain is DNSSEC signed.
+DnsSecAdvisory  : Great! DNSSEC is enabled on your domain.
+
+Name            : microsoft.com
+SpfRecord       : v=spf1 include:_spf-a.microsoft.com include:_spf-b.microsoft.com include:_spf-c.microsoft.com include:_spf-ssg-a.msft.net include:spf-a.ho
+                  tmail.com include:_spf1-meo.microsoft.com -all
+SpfAdvisory     : An SPF-record is configured and the policy is sufficiently strict.
+SPFRecordLength : 184
+DmarcRecord     : v=DMARC1; p=reject; pct=100; rua=mailto:itex-rua@microsoft.com; ruf=mailto:itex-ruf@microsoft.com; fo=1
+DmarcAdvisory   : Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.
+DkimRecord      : v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCPkb8bu8RGWeJGk3hJrouZXIdZ+HTp/azRp8IUOHp5wKvPUAi/54PwuLscUjRk4Rh3hjIkMpKRfJJXPxWb
+                  rT7eMLric7f/S0h+qF4aqIiQqHFCDAYfMnN6V3Wbke2U5EGm0H/cAUYkaf2AtuHJ/rdY/EXaldAm00PgT9QQMez66QIDAQAB;
+DkimSelector    : selector2
+DkimAdvisory    : DKIM-record found.
+MtaRecord       : v=STSv1; id=20190225000000Z;
+MtaAdvisory     : The domain has the MTA-STS DNS record and file configured and protected against interception or tampering.
+DnsSec          : No DNSKEY records found.
+DnsSecAdvisory  : Enable DNSSEC on your domain. DNSSEC decreases the vulnerability to DNS attacks.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, iki domain icin kontrolleri calistirir. NOT: Ornekteki -IncludeDNSSEC parametresi 2.1 surumunde kaldirilmistir; DNSSEC artik varsayilan olarak sorgulanir.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Invoke-spfDkimDmarc binsec.nl, microsoft.com -IncludeDNSSEC -DkimSelector selector2 -server 1.1.1.1
+
+Name            : binsec.nl
+SpfRecord       : v=spf1 -all
+SpfAdvisory     : An SPF-record is configured and the policy is sufficiently strict.
+SPFRecordLength : 11
+DmarcRecord     : v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:rac3n92qqi@rua.powerdmarc.com; ruf=mailto:rac3n92qqi@ruf.powerdmarc.com; pct=100;
+DmarcAdvisory   : Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.
+DkimRecord      :
+DkimSelector    : selector2
+DkimAdvisory    : No DKIM-record found for selector selector2._domainkey.binsec.nl
+MtaRecord       :
+MtaAdvisory     : The MTA-STS DNS record doesn't exist.
+DnsSec          : Domain is DNSSEC signed.
+DnsSecAdvisory  : Great! DNSSEC is enabled on your domain.
+
+Name            : microsoft.com
+SpfRecord       : v=spf1 include:_spf-a.microsoft.com include:_spf-b.microsoft.com include:_spf-c.microsoft.com include:_spf-ssg-a.msft.net include:spf-a.ho
+                  tmail.com include:_spf1-meo.microsoft.com -all
+SpfAdvisory     : An SPF-record is configured and the policy is sufficiently strict.
+SPFRecordLength : 184
+DmarcRecord     : v=DMARC1; p=reject; pct=100; rua=mailto:itex-rua@microsoft.com; ruf=mailto:itex-ruf@microsoft.com; fo=1
+DmarcAdvisory   : Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.
+DkimRecord      : v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCPkb8bu8RGWeJGk3hJrouZXIdZ+HTp/azRp8IUOHp5wKvPUAi/54PwuLscUjRk4Rh3hjIkMpKRfJJXPxWb
+                  rT7eMLric7f/S0h+qF4aqIiQqHFCDAYfMnN6V3Wbke2U5EGm0H/cAUYkaf2AtuHJ/rdY/EXaldAm00PgT9QQMez66QIDAQAB;
+DkimSelector    : selector2
+DkimAdvisory    : DKIM-record found.
+MtaRecord       : v=STSv1; id=20190225000000Z;
+MtaAdvisory     : The domain has the MTA-STS DNS record and file configured and protected against interception or tampering.
+DnsSec          : No DNSKEY records found.
+DnsSecAdvisory  : Enable DNSSEC on your domain. DNSSEC decreases the vulnerability to DNS attacks.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, belirtilen DKIM selector'u ve 1.1.1.1 DNS sunucusu kullanilarak iki domain icin kontrolleri calistirir.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Ornek 3 --------------------------</maml:title>
+        <dev:code>Invoke-SpfDkimDmarc -File $env:USERPROFILE\Desktop\domains.txt -server 1.1.1.1 -DkimSelector zendesk1
+
+Name            : binsec.nl
+SpfRecord       : v=spf1 -all
+SpfAdvisory     : An SPF-record is configured and the policy is sufficiently strict.
+SPFRecordLength : 11
+DmarcRecord     : v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:rac3n92qqi@rua.powerdmarc.com; ruf=mailto:rac3n92qqi@ruf.powerdmarc.com; pct=100;
+DmarcAdvisory   : Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.
+DkimRecord      :
+DkimSelector    : zendesk1
+MtaRecord       :
+MtaAdvisory     : The MTA-STS DNS record doesn't exist.
+
+Name            : itsecuritymatters.nl
+SpfRecord       : v=spf1 include:spf.protection.outlook.com -all
+SpfAdvisory     : An SPF-record is configured and the policy is sufficiently strict.
+SPFRecordLength : 46
+DmarcRecord     : v=DMARC1; p=reject; pct=100;
+DmarcAdvisory   : Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.
+DkimRecord      :
+DkimSelector    : zendesk1
+MtaRecord       :
+MtaAdvisory     : The MTA-STS DNS record doesn't exist.
+
+Name            : microsoft.com
+SpfRecord       : v=spf1 include:_spf-a.microsoft.com include:_spf-b.microsoft.com include:_spf-c.microsoft.com include:_spf-ssg-a.msft.net include:spf-a.ho
+                  tmail.com include:_spf1-meo.microsoft.com -all
+SpfAdvisory     : An SPF-record is configured and the policy is sufficiently strict.
+SPFRecordLength : 184
+DmarcRecord     : v=DMARC1; p=reject; pct=100; rua=mailto:itex-rua@microsoft.com; ruf=mailto:itex-ruf@microsoft.com; fo=1
+DmarcAdvisory   : Domain has a DMARC record and your DMARC policy will prevent abuse of your domain by phishers and spammers.
+DkimRecord      :
+DkimSelector    : zendesk1
+MtaRecord       : v=STSv1; id=20190225000000Z;
+MtaAdvisory     : The domain has the MTA-STS DNS record and file configured and protected against interception or tampering.</dev:code>
+        <dev:remarks>
+          <maml:para>Bu ornek, 'domains.txt' dosyasinda listelenen domainler icin kontrolleri calistirir. Belirtilen DKIM selector'u ve 1.1.1.1 DNS sunucusu kullanilir.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Cevrimici surum:</maml:linkText>
+        <maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Get-SPFRecord.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Invoke-SpfDkimDmarc, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+        <maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>GitHub proje sayfasi</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<command:details>
+<command:name>Get-CAARecord</command:name>
+<command:verb>Get</command:verb>
+<command:noun>CAARecord</command:noun>
+<maml:description>
+<maml:para>DNS CAA (Certification Authority Authorization) kaydini getirir, hangi sertifika otoritelerinin yetkili oldugunu ve raporlamanin etkin olup olmadigini kontrol eder.</maml:para>
+</maml:description>
+</command:details>
+<maml:description>
+<maml:para>Domain'in CAA DNS kaydini Cloudflare DNS over HTTPS uzerinden getirir ve domain adi, CAA durumu ile oneri bilgisini dondurur. -Server parametresi neden yok: PowerShell'in Resolve-DnsName komutu CAA kayit tipini desteklemez, bu nedenle fonksiyon sorguyu Cloudflare'in DNS over HTTPS resolver'i uzerinden yapar ve alternatif DNS sunucusu belirtilemez. Split DNS ortamlarinda bu ayrimi bilmekte fayda vardir. Fonksiyon yalnizca kaydin varligina bakmaz; IODEF iletisim adresinin tanimli olup olmadigini da kontrol eder. IODEF, yetkisiz bir sertifika talebi oldugunda size bildirim gitmesini saglar.</maml:para>
+</maml:description>
+<command:syntax>
+<command:syntaxItem>
+<maml:name>Get-CAARecord</maml:name>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+<maml:name>Name</maml:name>
+<maml:description>
+<maml:para>CAA kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+<dev:type>
+<maml:name>String[]</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+<maml:name>ProgressAction</maml:name>
+<maml:description>
+<maml:para></maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+<dev:type>
+<maml:name>ActionPreference</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+</command:syntaxItem>
+</command:syntax>
+<command:parameters>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+<maml:name>Name</maml:name>
+<maml:description>
+<maml:para>CAA kaydinin cozumlenecegi domain adini belirtir.</maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+<dev:type>
+<maml:name>String[]</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+<maml:name>ProgressAction</maml:name>
+<maml:description>
+<maml:para></maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+<dev:type>
+<maml:name>ActionPreference</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+</command:parameters>
+<command:inputTypes>
+<command:inputType>
+<dev:type>
+<maml:name>System.String[]</maml:name>
+</dev:type>
+<maml:description>
+<maml:para/>
+</maml:description>
+</command:inputType>
+</command:inputTypes>
+<command:returnValues>
+<command:returnValue>
+<dev:type>
+<maml:name>System.Object</maml:name>
+</dev:type>
+<maml:description>
+<maml:para/>
+</maml:description>
+</command:returnValue>
+</command:returnValues>
+<maml:alertSet>
+<maml:alert>
+<maml:para/>
+</maml:alert>
+</maml:alertSet>
+<command:examples>
+<command:example>
+<maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+<dev:code>PS C:\&gt; Get-CAARecord bakicubuk.com | fl * Name : bakicubuk.com CAARecord : CAA record found, allowed CAs: letsencrypt.org. CAAAdvisory : CAA record found and IODEF not configured. Consider adding an IODEF contact to the CAA record to receive notifications.</dev:code>
+<dev:remarks>
+<maml:para>Belirtilen domain icin DNS CAA kaydini kontrol eder. Cikti uzun oldugundan Format-List (fl) ile okumak daha rahattir.</maml:para>
+</dev:remarks>
+</command:example>
+<command:example>
+<maml:title>-------------------------- Ornek 2 --------------------------</maml:title>
+<dev:code>PS C:\&gt; Get-CAARecord bakicubuk.com, ornek.com | fl *</dev:code>
+<dev:remarks>
+<maml:para>Iki domain icin DNS CAA kaydini kontrol eder. Kayit bulunamayan domain icin 'No CAA record found.' metni doner.</maml:para>
+</dev:remarks>
+</command:example>
+</command:examples>
+<command:relatedLinks>
+<maml:navigationLink>
+<maml:linkText>Cevrimici surum:</maml:linkText>
+<maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Get-CAARecord.md</maml:uri>
+</maml:navigationLink>
+<maml:navigationLink>
+<maml:linkText>Get-CAARecord, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+<maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+</maml:navigationLink>
+<maml:navigationLink>
+<maml:linkText>GitHub proje sayfasi</maml:linkText>
+<maml:uri>https://www.github.com/T13nn3s/Invoke-SpfDkimDmarc/</maml:uri>
+</maml:navigationLink>
+</command:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<command:details>
+<command:name>Get-TlsRpt</command:name>
+<command:verb>Get</command:verb>
+<command:noun>TlsRpt</command:noun>
+<maml:description>
+<maml:para>Bir veya birden fazla domain icin TLS-RPT kayitlarini getirir ve dogrular.</maml:para>
+</maml:description>
+</command:details>
+<maml:description>
+<maml:para>Get-TlsRpt, domain'in TLS-RPT DNS kaydini sorgular ve kaydin icerigiyle birlikte gecerli bir TLS-RPT politikasinin bulunup bulunmadigini belirten bir oneri metni dondurur. Alternatif DNS sunucusu uzerinden sorgulamayi destekler. Neden onemli: TLS-RPT, MTA-STS'in tamamlayicisidir. Karsi taraftaki mail sunucusu size mesaj gonderirken TLS baglantisinda sorun yasarsa, bunu rua alaninda belirttiginiz adrese raporlar. MTA-STS'i enforce moduna almadan once TLS-RPT ile bir sure gozlem yapmak, teslimat kaybi yasamamak acisindan kritiktir. Kayit varsa ancak rua alani tanimli degilse modul bunu ayrica uyarir.</maml:para>
+</maml:description>
+<command:syntax>
+<command:syntaxItem>
+<maml:name>Get-TlsRpt</maml:name>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+<maml:name>Name</maml:name>
+<maml:description>
+<maml:para>TLS-RPT kayitlari cozumlenecek bir veya birden fazla domain adi girin.</maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+<dev:type>
+<maml:name>String[]</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+<maml:name>Server</maml:name>
+<maml:description>
+<maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type>
+<maml:name>String</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+<maml:name>ProgressAction</maml:name>
+<maml:description>
+<maml:para></maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+<dev:type>
+<maml:name>ActionPreference</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+</command:syntaxItem>
+</command:syntax>
+<command:parameters>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+<maml:name>Name</maml:name>
+<maml:description>
+<maml:para>TLS-RPT kayitlari cozumlenecek bir veya birden fazla domain adi girin.</maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+<dev:type>
+<maml:name>String[]</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+<maml:name>Server</maml:name>
+<maml:description>
+<maml:para>Sorgularin yonlendirilecegi DNS sunucusu. Split DNS ortamlarinda kullanilir.</maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type>
+<maml:name>String</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
+<maml:name>ProgressAction</maml:name>
+<maml:description>
+<maml:para></maml:para>
+</maml:description>
+<command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
+<dev:type>
+<maml:name>ActionPreference</maml:name>
+<maml:uri/>
+</dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+</command:parameters>
+<command:inputTypes>
+<command:inputType>
+<dev:type>
+<maml:name>System.String[]</maml:name>
+</dev:type>
+<maml:description>
+<maml:para/>
+</maml:description>
+</command:inputType>
+</command:inputTypes>
+<command:returnValues>
+<command:returnValue>
+<dev:type>
+<maml:name>System.Object</maml:name>
+</dev:type>
+<maml:description>
+<maml:para/>
+</maml:description>
+</command:returnValue>
+</command:returnValues>
+<maml:alertSet>
+<maml:alert>
+<maml:para/>
+</maml:alert>
+</maml:alertSet>
+<command:examples>
+<command:example>
+<maml:title>-------------------------- Ornek 1 --------------------------</maml:title>
+<dev:code>PS C:\&gt; Get-TlsRpt microsoft.com Name TlsRptRecord TlsRptAdvisory ---- ------------ -------------- microsoft.com v=TLSRPTv1;rua=https://tlsrpt.azurewebsites.net/report TLS-RPT Record found. The 'rua' field is configured.</dev:code>
+<dev:remarks>
+<maml:para>Belirtilen domain icin TLS-RPT DNS kaydini sorgular.</maml:para>
+</dev:remarks>
+</command:example>
+<command:example>
+<maml:title>-------------------------- Ornek 2 --------------------------</maml:title>
+<dev:code>PS C:\&gt; Get-TlsRpt bakicubuk.com -Server 1.1.1.1</dev:code>
+<dev:remarks>
+<maml:para>Sorguyu 1.1.1.1 DNS sunucusu uzerinden yapar. Split DNS ortamlarinda ic DNS sunucusu farkli cevap verebilecegi icin harici bir resolver kullanmak onerilir.</maml:para>
+</dev:remarks>
+</command:example>
+</command:examples>
+<command:relatedLinks>
+<maml:navigationLink>
+<maml:linkText>Cevrimici surum:</maml:linkText>
+<maml:uri>https://github.com/T13nn3s/Invoke-SpfDkimDmarc/blob/main/public/CmdletHelp/Get-TlsRpt.md</maml:uri>
+</maml:navigationLink>
+<maml:navigationLink>
+<maml:linkText>Get-TlsRpt, PowerShell Gallery'de yayinlanan 'DomainHealthChecker' modulunun parcasidir</maml:linkText>
+<maml:uri>https://www.powershellgallery.com/packages/DomainHealthChecker/</maml:uri>
+</maml:navigationLink>
+<maml:navigationLink>
+<maml:linkText>GitHub proje sayfasi</maml:linkText>
+<maml:uri>https://www.github.com/T13nn3s/Invoke-SpfDkimDmarc/</maml:uri>
+</maml:navigationLink>
+</command:relatedLinks>
+</command:command>
+</helpItems>
