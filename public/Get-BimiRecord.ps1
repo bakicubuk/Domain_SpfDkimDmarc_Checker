@@ -1,20 +1,7 @@
-<#
-    Get-BimiRecord - BIMI (Brand Indicators for Message Identification) kaydini
-    cozumler ve dogrular.
+# Kaynak: https://github.com/bakicubuk/Domain_SpfDkimDmarc_Checker/
 
-    DUZELTME NOTU: Orijinal dosyanin basinda, .psm1 dosyasina ait olan modul
-    yukleyici blok (private ve public klasorlerini dot-source eden kod) yer
-    aliyordu. Bu dosya alfabetik olarak ilk yuklenen public dosya oldugu icin
-    soz konusu blok, yukleme tamamlanmadan public klasorunu yeniden taramaya
-    baslatiyor ve fonksiyonun modul kapsaminda tanimlanmasini engelliyordu.
-    Sonuc olarak Get-Command 10 yerine 9 fonksiyon donduruyordu. Blok
-    kaldirilmistir; dosya artik dogrudan fonksiyon tanimiyla baslar.
-
-    Aciklama satirlari Turkce'ye cevrilmistir. Advisory metinleri bilincli
-    olarak cevrilmemistir: bunlar kullaniciya gosterilen aciklama degil,
-    script'lerin ayristirdigi cikti verisidir.
-
-    Kaynak: https://github.com/T13nn3s/Invoke-SpfDkimDmarc/
+<#>
+HelpInfoURI 'https://github.com/bakicubuk/Domain_SpfDkimDmarc_Checker/blob/main/public/CmdletYardim/Get-BIMIRecord.md'
 #>
 
 function Get-BimiRecord {
