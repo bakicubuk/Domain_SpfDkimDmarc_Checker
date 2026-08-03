@@ -208,4 +208,4 @@ function Get-BIMIRecord {
         Write-Verbose "Completed $($MyInvocation.MyCommand)"
     }
 }
-Set-Alias -Name gbimi -Value Get-BimiRecord
+Set-Alias -Name gbimi -Value Get-BIMIRecord
