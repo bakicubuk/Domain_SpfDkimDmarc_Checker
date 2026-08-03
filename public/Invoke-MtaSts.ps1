@@ -1,0 +1,262 @@
+# NOT: Bu dosya, orijinal script'in aciklama satirlarinin Turkce'ye cevrilmis
+# referans kopyasidir. Calisan surum public/ klasorundedir.
+#
+# Advisory metinleri (SpfAdvisory, DmarcAdvisory vb.) bilincli olarak
+# cevrilmemistir: bunlar kullaniciya gosterilen aciklama degil, script'lerin
+# ayristirdigi CIKTI VERISIDIR. Cevrilirse rapor script'leri bozulur.
+#
+# Kaynak: https://github.com/bakicubuk/Domain_SpfDkimDmarc_Checker/
+
+<#>
+.HelpInfoURI 'https://github.com/bakicubuk/Domain_SpfDkimDmarc_Checker/blob/main/public/CmdletYardim/Invoke-MtaSts.md'
+#>
+
+# Private (ic kullanim) fonksiyonlari yukle
+Get-ChildItem -Path $PSScriptRoot\..\private\*.ps1 |
+ForEach-Object {
+    . $_.FullName
+}
+
+function Invoke-MtaSts {
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory = $True,
+            ValueFromPipeline = $True,
+            ValueFromPipelineByPropertyName = $True,
+            HelpMessage = "MTA-STS kaydinin sorgulanacagi domain adini belirtir.")]
+        [string[]]$Name,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = "Sorgularin yonlendirilecegi DNS sunucusu.")]
+        [string]$Server
+    )
+
+    begin {
+
+        # Isletim sistemi platformunu belirle
+        try {
+            Write-Verbose "Determining OS platform"
+            $OsPlatform = (Get-OsPlatform).Platform
+        }
+        catch {
+            Write-Verbose "Failed to determine OS platform, defaulting to Windows"
+            $OsPlatform = "Windows"
+        }
+
+        # Linux veya macOS: dnsutils paketinin kurulu olup olmadigini kontrol et
+        if ($OsPlatform -eq "Linux" -or $OsPlatform -eq "macOS") {
+            Test-DnsUtilsInstalled
+        }
+
+        Write-Verbose "Starting $($MyInvocation.MyCommand)"
+        $PSBoundParameters | Out-String | Write-Verbose
+
+        if ($PSBoundParameters.ContainsKey('Server')) {
+            $SplatParameters = @{
+                'Server'      = $Server
+                'ErrorAction' = 'SilentlyContinue'
+            }
+        }
+        Else {
+            $SplatParameters = @{
+                'ErrorAction' = 'SilentlyContinue'
+            }
+        }
+
+        $MtaObject = New-Object System.Collections.Generic.List[System.Object]
+
+        # MX kaydindaki mail sunucusunun TLS destekleyip desteklemedigini test et
+        # Test-MxTls -MxHostname aspmx.l.google.com
+        function Test-MxTls {
+            [CmdletBinding()]
+            param(
+                [string]$MxHostname
+            )
+
+            # https://www.checktls.com/TestReceiver
+            # https://www.alitajran.com/test-smtp-connection-with-telnet-powershell-script/
+
+            try {
+                $ret = @()
+                $socket = New-Object System.Net.Sockets.TcpClient($MxHostname, 25)
+
+                $stream = $socket.GetStream()
+                $writer = New-Object System.IO.StreamWriter($stream)
+                $buffer = New-Object System.Byte[] 1024
+                $encoding = New-Object System.Text.AsciiEncoding
+                Start-Sleep -Milliseconds 100
+                While ( $stream.DataAvailable ) {
+                    $read = $stream.Read($buffer, 0, 1024)
+                    $ret += $encoding.GetString($buffer, 0, $read)
+                }
+
+                $writer.WriteLine("EHLO TestingTLS")
+                $writer.Flush()
+                Start-Sleep -Milliseconds 100
+                While ( $stream.DataAvailable ) {
+                    $read = $stream.Read($buffer, 0, 1024)
+                    $ret += $encoding.GetString($buffer, 0, $read)
+                }
+
+                $writer.WriteLine("STARTTLS")
+                $writer.Flush()
+                Start-Sleep -Milliseconds 500
+                While ( $stream.DataAvailable ) {
+                    $read = $stream.Read($buffer, 0, 1024)
+                    $ret += $encoding.GetString($buffer, 0, $read)
+                }
+
+                return !!($ret -match "220")
+            }
+            catch {
+                Write-Error $_
+                return $false
+            }
+        }
+    }
+
+    Process {
+        # MTA-STS politika dosyasindaki MX girdileri ile gercek MX kayitlarinin
+        # birebir ortusup ortusmedigini kontrol et; eksik ya da fazla girdi varsa false doner
+        function Get-MxMta {
+            [CmdletBinding()]
+            param(
+                [string]$DomainName,
+                [string]$MtsStsFileContents
+            )
+
+            if ($OsPlatform -eq "Windows") {
+                $_mx = Resolve-DnsName -Name $DomainName -Type MX @SplatParameters | Select-Object -ExpandProperty NameExchange
+            }
+            elseif ($OsPlatform -eq "macOS" -or $OsPlatform -eq "Linux") {
+                $_mx = $(dig MX $DomainName +short | ForEach-Object { ($_ -split " ")[1] } | Out-String).Trim().TrimEnd(".")
+            }
+            elseif ($OsPlatform -eq "macOS" -or $OsPlatform -eq "Linux" -and $Server) {
+                $_mx = $(dig MX $DomainName +short NS $PSBoundParameters.Server | ForEach-Object { ($_ -split " ")[1] } | Out-String).Trim()
+            }
+            
+            Write-Verbose "MX: $($_mx)"
+            $_mta = $MtsStsFileContents.Split("`n") -match '(?<=mx: ).*$' | ForEach-Object { $_.Replace("mx:", "").Trim() }
+            Write-Verbose "[DEBUG] MTA-STS File MX entries: $($_mta)"
+            Write-Verbose "MTA: $($_mta)"
+
+            # Tum MX ve MTA eslesmelerini al
+            $ret = $_mx | ForEach-Object { $i = $_; $_mta | ForEach-Object { if ( $i -like $_ ) { [PSCustomObject]@{ MX = $i; MTA = $_ } } } }
+            Write-Verbose "[DEBUG] ret var content: $ret"
+            Write-Verbose "Matches: `n $($ret | Out-String)"
+
+            if ($OsPlatform -eq "Windows") {
+                $NameExchange = (Resolve-DnsName -Name $DomainName -Type MX @SplatParameters | Select-Object -ExpandProperty NameExchange)
+            }
+            elseif ($OsPlatform -eq "macOS" -or $OsPlatform -eq "Linux") {
+                $NameExchange = $(dig MX $DomainName +short | ForEach-Object { ($_ -split " ")[1] } | Out-String).Trim()
+            }
+            elseif ($OsPlatform -eq "macOS" -or $OsPlatform -eq "Linux" -and $Server) {
+                $NameExchange = $(dig MX $DomainName +short NS $PSBoundParameters.Server | ForEach-Object { ($_ -split " ")[1] } | Out-String).Trim()
+            }
+
+            $res = Compare-Object -ReferenceObject $ret.MX -DifferenceObject $NameExchange # if differences, some MX records are not in MTA
+            $res += Compare-Object -ReferenceObject ($ret.MTA | Select-Object -Unique) -DifferenceObject $_mta
+
+            return (!$res)
+        }
+
+        $cti = (Get-Culture).TextInfo
+
+        foreach ($domain in $Name) {
+
+            if ($OsPlatform -eq "Windows") {
+                $mtsStsDns = (Resolve-DnsName -Name "_mta-sts.$($domain)" -Type TXT -QuickTimeout -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq "_mta-sts.$($domain)" -and $_.Strings -match "v=STSv1" } | Select-Object -ExpandProperty Strings) -join "`n"
+                Write-Verbose "mtsStsDns: $($mtsStsDns)"
+            }
+            elseif ($OsPlatform -eq "macOS" -or $OsPlatform -eq "Linux") {
+                $mtsStsDns = $(dig TXT "_mta-sts.$($domain)" +short | Out-String).Trim()
+                Write-Verbose "mtsStsDns: $($mtsStsDns)"
+            }
+            elseif ($OsPlatform -eq "macOS" -or $OsPlatform -eq "Linux" -and $Server) {
+                $mtsStsDns = $(dig TXT "_mta-sts.$($domain)" +short NS $PSBoundParameters.Server | Out-String).Trim()
+                Write-Verbose "mtsStsDns: $($mtsStsDns)"
+            }
+
+            try { 
+                Write-Verbose "Retrieving MTA-STS file from https://mta-sts.$($domain)/.well-known/mta-sts.txt"
+                $mtsStsFile = Invoke-WebRequest "https://mta-sts.$($domain)/.well-known/mta-sts.txt" -UseBasicParsing -DisableKeepAlive | Select-Object -ExpandProperty Content 
+            }
+            catch { 
+                $mtsStsFile = $null 
+            }
+            Write-Verbose "mtsStsFile: $($mtsStsFile)"
+
+            $mtaRecord = $mtsStsDns
+
+            switch -Regex ($mtsStsDns) {
+                { !$_ } {
+                    $mtaRecord = "No MTA-STS DNS record found."
+                    $mtaAdvisory = "The MTA-STS DNS record doesn't exist. "; continue
+                }
+                { $_.Split("`n").Count -ne 1 } {
+                    $mtaAdvisory = "There are multiple MTA-STS DNS records. "
+                }
+                { $_ -notmatch 'STSv1' } {
+                    $mtaAdvisory = "The MTA-STS version is not configured properly. Only STSv1 is supported. " 
+                }
+                { $_ -notmatch 'id=([^;\s]{1,32})(?:;|$)' } {
+                    $mtaAdvisory = "The MTA-STS id must be alphanumeric and no longer than 32 characters. " 
+                }
+                default {
+
+                    if ($OsPlatform -eq "Windows") {
+                        $DomainNameExchange = Resolve-DnsName -Name $domain -Type MX @SplatParameters | Select-Object -ExpandProperty NameExchange
+                    }
+                    elseif ($OsPlatform -eq "macOS" -or $OsPlatform -eq "Linux") {
+                        $DomainNameExchange = $(dig MX $domain +short | ForEach-Object { ($_ -split " ")[1] } | Out-String).Trim()
+                    }
+                    elseif ($OsPlatform -eq "macOS" -or $OsPlatform -eq "Linux" -and $Server) {
+                        $DomainNameExchange = $(dig MX $domain +short NS $PSBoundParameters.Server | ForEach-Object { ($_ -split " ")[1] } | Out-String).Trim()
+                    }
+
+                    switch -Regex ($mtsStsFile) {
+                        { !$_ } {
+                            $mtaAdvisory = "The MTA-STS file doesn't exist. "; continue 
+                        }
+                        { $_ -notmatch 'version:\s*(STSv1)' } { 
+                            $mtaAdvisory = "The MTA-STS version is not configured in the file. The only options is STSv1. " 
+                        }
+                        { $_ -notmatch 'mode:\s*(enforce|none|testing)' } { 
+                            $mtaAdvisory = "The MTA-STS mode is not configured in the file. Options are Enforce, Testing and None." 
+                        }
+                        { $_ -match 'mode:\sF*(enforce|none|testing)' -and $_ -notmatch 'mode:\s*Enforce' } {
+                            $mtaAdvisory = "The MTA-STS file is configured in $($null = $_ -match 'mode:\s*(enforce|none|testing)'; $cti.ToTitleCase($Matches[1].ToLower()) ) mode and not protecting interception or tampering. " 
+                        }
+                        { !($_.Split("`n") -match '(?<=mx: ).*$') } {
+                            $mtaAdvisory = "The MTA-STS file doesn't have any MX record configured. " 
+                        }
+                        { $_.Split("`n") -match '(?<=mx: ).*$' -and ( !(Get-MxMta -DomainName $domain -mtsStsFileContents $mtsStsFile) ) } { 
+                            $mtaAdvisory = "The MTA-STS file MX records don't match with the MX records configured in the domain. " 
+                        }
+                        { $_.Split("`n") -match '(?<=mx: ).*$' -and (
+                            $DomainNameExchange | ForEach-Object { Test-MxTls -MxHostname $_ -Verbose } ) -contains $false } {
+                            $mtaAdvisory = "At least one of the MX records configured in the MTA-STS file MX records list doesn't support TLS. " 
+                        }
+                        { $_ -notmatch 'max_age:\s*(604800|31557600)' } {
+                            $mtaAdvisory = "The MTA-STS max age configured in the file should be greater than 604800 seconds and less than 31557600 seconds. " 
+                        }
+                        default {
+                            $mtaAdvisory = "The domain has the MTA-STS DNS record and file configured and protected against interception or tampering."
+                        }
+                    }
+                }
+            }
+            $MtaReturnValues = New-Object psobject 
+            $MtaReturnValues | Add-Member NoteProperty "Name" $domain
+            $MtaReturnValues | Add-Member NoteProperty "mtaRecord" $mtaRecord
+            $MtaReturnValues | Add-Member NoteProperty "mtaAdvisory" $mtaAdvisory
+            $MtaObject.Add($MtaReturnValues)
+            $MtaReturnValues
+            
+        }
+    } End {}
+}
+
+Set-Alias -Name gmta -Value Get-MTASTS
